@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+<link rel="icon" href="/fotos/icon.png" type="image/png">
+
+<title>Memórias</title>
+
+<!-- Fonte elegante para o título -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+
+    #fundo {
+        position: fixed; 
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh; 
+        background: url(/fotos/fundo.png);
+        background-size: cover; 
+        background-position: center center; 
+        z-index: -1; 
+    }
+
+    section {
+        background-image: linear-gradient(to bottom, #4d3c3c, #ffffff);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 40px;
+        position: relative; 
+        z-index: 1; 
+    }
+
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 60px;
+    }
+
+    .titulo {
+        font-family: 'Playfair Display', serif;
+        font-size: 72px;
+        color: #445a8a;
+        margin: 0;
+    }
+
+    .subtitulo {
+        font-size: 32px;
+        letter-spacing: 6px;
+        color: #445a8a;
+        margin: 0;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        text-decoration: none;
+    }
+
+    .subtitulo:hover {
+        color: rgb(32, 22, 77); 
+    }
+
+    .galeria {
+        display: flex;
+        justify-content: space-between;
+        gap: 40px;
+        flex-wrap: wrap;
+    }
+
+    .item {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .card {
+        width: 300px;
+        height: 420px;
+        perspective: 1000px;
+        cursor: pointer;
+        margin-bottom: 15px; 
+    }
+
+    .card-inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .card.flipped .card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .card-front,
+    .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+
+    .card-front img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .card-front::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transition: 0.4s ease;
+    }
+
+    .heart {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        font-size: 60px;
+        color: white;
+        transition: 0.4s ease;
+    }
+
+    .card:hover .card-front::after {
+        opacity: 1;
+    }
+
+    .card:hover .heart {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+
+    .card-back {
+
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transform: rotateY(180deg);
+        font-size: 20px;
+        background-color: var(--body-mn);
+        backdrop-filter: blur(100px);
+    }
+
+
+    .legenda {
+        position: relative;
+        z-index: 1;
+        font-size: 18px;
+        color: #232d44;
+        letter-spacing: 2px;
+    }
+
+
+    @media (max-width: 900px) {
+        .header {
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .galeria {
+            justify-content: center;
+        }
+    }
+
+    .texto-final {
+        margin-top: 80px;
+        padding: 40px 20px;
+        text-align: center;
+        font-size: 22px;
+        letter-spacing: 2px;
+        color: #313f5f;
+        position: relative; 
+        z-index: 1;
+    }
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <section>
+        <div id="fundo"></div> 
+    </section>
+
+    <div class="header">
+        <h1 class="titulo">Memórias especiais</h1>
+        <a href="texto.html" class="subtitulo">Continua..</a> 
+    </div>
+
+    <div class="galeria">
+
+
+        <div class="item">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="fotos/1801.png">
+                        <div class="heart">❤</div>
+                    </div>
+                    <div class="card-back">
+                        Não tenho muito o que falar sobre esse dia… mas foi nele que, numa partida aleatória, com probabilidade muito baixa, eu te encontrei. E, para o seu azar (ou sorte), eu nunca mais te deixei em paz.
+                    </div>
+                </div>
+            </div>
+            <div class="legenda">18/01/2026</div>
+        </div>
+
+
+        <div class="item">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/fotos/0902.png">
+                        <div class="heart">❤</div>
+                    </div>
+                    <div class="card-back">
+                        Ouvi você cantando enquanto limpava e arrumava a casinha comigo… e foi exatamente aí que eu tive a certeza absoluta que eu já estava completamente apaixonada por você mesmo sendo tão rápido.
+                    </div>
+                </div>
+            </div>
+            <div class="legenda">09/02/2026 💙</div>
+        </div>
+
+
+        <div class="item">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/fotos/2102.jpg">
+                        <div class="heart">❤</div>
+                    </div>
+                    <div class="card-back">
+                       Enfim… ALGO QUE EU JUREI QUE NÃO ACONTECERIA aconteceu. E agora você é meu. Oficialmente. Sem devolução, sem troca e sem opção de cancelar a assinatura.
+                    </div>
+                </div>
+            </div>
+            <div class="legenda">21/02/2026 ❤️💍</div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="texto-final">
+    Um pouquinho das minhas memórias favoritas com você meu amor!! 💙
+</div>
+
+<script>
+document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', function() {
+        this.classList.toggle('flipped');
+    });
+});
+</script>
+
+</body>
+</html>
