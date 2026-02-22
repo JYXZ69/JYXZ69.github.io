@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" href="/fotos/icon.png" type="image/png">
+<title>Continua...</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    background-color: #e9e6e3;
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+    #fundo {
+        position: fixed; 
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh; 
+        background: url(/fotos/fundo.png);
+        background-size: cover; 
+        background-position: center center; 
+        z-index: -1; 
+    }
+
+    section {
+        background-image: linear-gradient(to bottom, #4d3c3c, #ffffff);
+    }
+
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 40px;
+    position: relative; 
+    z-index: 1; 
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    color: #445a8a;
+    margin: 0;
+}
+
+/* BLOCO DO TEXTO */
+.texto-container {
+    color: white;
+    padding: 60px;
+    border-radius: 8px;
+    line-height: 1.8;
+    font-size: 20px;
+    letter-spacing: 1px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s ease forwards;
+
+    background-color: var(--body-mn);
+    backdrop-filter: blur(100px);
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.texto-container p {
+    margin-bottom: 25px;
+}
+
+/* ASSINATURA */
+.assinatura {
+    margin-top: 40px;
+    text-align: right;
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+}
+
+/* BOTÃO VOLTAR */
+.voltar {
+    display: inline-block;
+    margin-top: 60px;
+    text-decoration: none;
+    color: #313f5f;
+    font-size: 18px;
+    letter-spacing: 3px;
+    transition: 0.3s;
+}
+
+.voltar:hover {
+    color: rgb(32, 22, 77); 
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+    .texto-container {
+        padding: 40px 25px;
+        font-size: 18px;
+    }
+
+    .titulo {
+        font-size: 46px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    
+    <section>
+        <div id="fundo"></div> 
+    </section>
+
+
+    <div class="header">
+        <h1 class="titulo">Continua...</h1>
+    </div>
+
+   <div class="texto-container">
+    <p>
+        Sei que estamos apenas no começo, mas sinto com toda a certeza que quero que isso dure.
+    </p>
+
+    <p>
+        Estou amando conhecer cada detalhe seu, e a cada momento, fico ainda mais ansiosa e animada para descobrir mais de você. 
+        Eu adoro o seu sorriso, sua voz, sua personalidade... É incrível como você tem tudo tão perfeito, e como isso me faz me apaixonar por você cada vez mais.
+    </p>
+
+    <p>
+         E eu queria fazer algo fofo para você faz um tempinho, algo diferente... 
+        E então, pensei em algo que possa ir atualizando ao longo do tempo (se eu lembrar).
+        Colocar sentimentos, momentos, e as coisas importantes que acontecerem entre nós. 
+        Bom, esse é apenas o começo.
+    </p>
+
+    <div class="assinatura">
+        Para o meu lindo, ❤️
+    </div>
+    </div>
+
+    <div style="text-align:center;">
+        <a href="index.html" class="voltar">VOLTAR</a>
+    </div>
+
+</div>
+
+</body>
+</html>
