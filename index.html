@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/fotos/icon.png" type="image/png">
+    <title>I LOVE YOU</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --cor-principal: #445a8a;
+            --cor-detalhe:  #445a8a;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        #fundo {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh; 
+            background: url(/fotos/fundo.png);
+            background-size: cover; 
+            background-position: center center; 
+            z-index: -1; 
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            position: relative; 
+            z-index: 1; 
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 60px;
+        }
+
+        .titulo-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .titulo {
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            color: var(--cor-principal);
+            margin: 0;
+        }
+
+        .link-galaxia {
+            font-size: 18px;
+            color: var(--cor-detalhe);
+            text-decoration: none;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            font-weight: 500;
+            transition: 0.3s;
+            display: inline-block;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .link-galaxia:hover, .subtitulo:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+            transform: translateX(8px);
+        }
+
+        .subtitulo {
+            font-size: 28px;
+            letter-spacing: 4px;
+            color: var(--cor-principal);
+            text-decoration: none;
+            transition: 0.3s;
+            padding-top: 15px;
+        }
+
+        .galeria {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap; /* Isso garante que se não couber na tela, ela pule para baixo automaticamente */
+        }
+
+        .item {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card {
+            width: 300px;
+            height: 420px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin-bottom: 15px; 
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 60px;
+            color: white;
+            transition: 0.4s ease;
+            z-index: 2;
+        }
+
+        .card:hover .heart {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .card-back {
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transform: rotateY(180deg);
+            font-size: 18px;
+            padding: 20px;
+            background: rgba(68, 90, 138, 0.85);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+        }
+
+        .legenda {
+            font-size: 16px;
+            color: #384a70;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .texto-final {
+            padding: 60px 20px;
+            text-align: center;
+            font-size: 22px;
+            letter-spacing: 2px;
+            color: var(--cor-principal);
+        }
+
+        @media (max-width: 900px) {
+            .header { flex-direction: column; align-items: center; text-align: center; }
+            .titulo { font-size: 48px; }
+            .subtitulo { margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="fundo"></div> 
+
+    <div class="container">
+        <div class="header">
+            <div class="titulo-container">
+                <h1 class="titulo">Memórias especiais</h1>
+                <a href="1M.html" class="link-galaxia">✨ Nosso 1º mês no universo (Clique aqui)</a>
+                <a href="video.html" class="link-galaxia">✨ ZHERO69</a>
+            </div>
+            <a href="texto.html" class="subtitulo">Continua..</a> 
+        </div>
+
+        <div class="galeria">
+            
+            <div class="item">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img src="fotos/1801.png">
+                            <div class="heart">❤</div>
+                        </div>
+                        <div class="card-back">Não tenho muito o que falar sobre esse dia… mas foi nele que, numa partida aleatória, com probabilidade muito baixa, eu te encontrei.</div>
+                    </div>
+                </div>
+                <div class="legenda">18/01/2026</div>
+            </div>
+
+            <div class="item">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img src="/fotos/0902.png">
+                            <div class="heart">❤</div>
+                        </div>
+                        <div class="card-back">Ouvi você cantando enquanto limpava e arrumava a casinha comigo… certeza absoluta que eu já estava apaixonada.</div>
+                    </div>
+                </div>
+                <div class="legenda">09/02/2026 💙</div>
+            </div>
+
+            <div class="item">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img src="/fotos/1802.png">
+                            <div class="heart">❤</div>
+                        </div>
+                        <div class="card-back">Nossa, como eu já acordei feliz lendo isso. Não tem muito o que falar, além de que eu fiquei muito feliz.</div>
+                    </div>
+                </div>
+                <div class="legenda">18/02/2026</div>
+            </div>
+
+            <div class="item">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <img src="/fotos/2102.jpg">
+                            <div class="heart">❤</div>
+                        </div>
+                        <div class="card-back">Oficialmente meu. Sem devolução, sem troca e sem opção de cancelar a assinatura. ❤️💍</div>
+                    </div>
+                </div>
+                <div class="legenda">21/02/2026 ❤️💍</div>
+            </div>
+
+            <div class="item">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/fotos/0603.jpg">
+                        <div class="heart">❤</div>
+                    </div>
+                    <div class="card-back">
+                        Inimigos do fim!! ksksks
+                    </div>
+                </div>
+            </div>
+            <div class="legenda">06/03/2026</div>
+        </div>
+
+        <div class="item">
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="/fotos/breve.png">
+                        <div class="heart">❤</div>
+                    </div>
+                    <div class="card-back">
+                        Em breve!!
+                    </div>
+                </div>
+            </div>
+            <div class="legenda">Em breve!!</div>
+        </div>
+
+         
+
+        </div> </div>
+
+    <div class="texto-final">
+        Um pouquinho das minhas memórias favoritas com você meu amor!! 💙
+    </div>
+
+    <script>
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('flipped');
+            });
+        });
+    </script>
+
+</body>
+</html>

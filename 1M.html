@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/fotosG/icon.png" type="image/png">
+    <title>Nosso Universo - 1 Mês</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #000205; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        #start-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; background: radial-gradient(circle, #001 0%, #000 100%); z-index: 100;
+            transition: opacity 1s ease;
+        }
+        #start-screen h1 {
+            font-size: 3em; color: #ffcc00; text-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+            margin-bottom: 10px; text-align: center; padding: 0 20px;
+        }
+        #start-screen p { color: #888; margin-bottom: 30px; font-style: italic; }
+        #btn-start {
+            padding: 15px 40px; font-size: 1.2em; color: white;
+            background: #440088; border: 2px solid #9900ff;
+            border-radius: 50px; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 0 15px rgba(153, 0, 255, 0.4);
+        }
+        #btn-start:hover { background: #5500aa; transform: scale(1.05); box-shadow: 0 0 25px rgba(153, 0, 255, 0.7); }
+
+        .intro-star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle 3s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 0.8; } }
+
+        #ui { position: absolute; top: 15px; left: 15px; pointer-events: none; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 8px; font-size: 13px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(4px); display: none; }
+        
+        #info-panel {
+            position: absolute; right: 20px; top: 20px; width: 280px;
+            background: rgba(10, 0, 20, 0.95); border: 1px solid #9900ff;
+            padding: 20px; border-radius: 15px; backdrop-filter: blur(10px);
+            display: none; box-shadow: 0 0 30px rgba(153, 0, 255, 0.2);
+            animation: slideIn 0.4s ease-out; text-align: center;
+        }
+
+        #obj-gif { width: 100%; border-radius: 10px; margin-bottom: 15px; display: none; }
+
+        @keyframes slideIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        canvas { display: block; cursor: crosshair; }
+        .close-btn { background: #ff4444; border: none; color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer; float: right; font-weight: bold; }
+        b { color: #ffcc00; }
+        #obj-name { margin-top: 10px; font-size: 1.4em; color: #ffcc00; }
+        #obj-desc { line-height: 1.6; color: #eee; font-size: 1.05em; margin-bottom: 10px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+
+<div id="start-screen">
+    <h1>Meu universo é você</h1>
+    <p>Feliz 1 mês de namoro!</p>
+    <button id="btn-start" onclick="startGame()">Clica ai</button>
+</div>
+
+<div id="ui">
+    <b>Sistema Estelar da perfeição do ZHERO69</b><br>
+    <small>Arraste para girar • Scroll para Zoom • Clique nos astros</small>
+</div>
+
+<div id="info-panel">
+    <button class="close-btn" onclick="closePanel()">✕</button>
+    <img id="obj-gif" src="" alt="Momento">
+    <h2 id="obj-name">Nome do Astro</h2>
+    <p id="obj-desc">Mensagem aqui.</p>
+</div>
+
+<canvas id="c"></canvas>
+
+<script>
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d", { alpha: false });
+const infoPanel = document.getElementById("info-panel");
+const gifElement = document.getElementById("obj-gif");
+
+let gameRunning = false;
+let cx, cy, rotX = 0.4, rotY = 0, zoomScale = 0.3;
+let dragging = false, lastX, lastY, clickStartTime;
+let lastRenderList = [];
+
+const nomesPlanetas = ["Kepler-186f", "Gliese 581g", "Proxima b", "Pandora", "Miller", "Mann", "Andrômeda Prime", "Alpha Centauri", "Sirius B", "Vênus de Cristal", "Nebulosa de Orion", "Titã", "Europa", "Estrela d'Alva", "Zênite", "Acalento"];
+
+const mensagensPlanetas = ["Cada segundo ao seu lado é um novo planeta que descubro.", "Você é a gravidade que mantém meu mundo no lugar.", "Seu sorriso brilha mais que qualquer estrela.", "Meu lugar favorito no espaço é onde você estiver.", "Você transforma poeira estelar em magia.", "Orbitar você é a jornada mais linda da minha vida."];
+
+const dadosBuracosNegros = [
+    { name: "O Primeiro Olhar", 
+    msg: "Quanto mais eu vejo esse seu olhar, sua boca e esse seu cabelo, mais eu fico apaixonada por cada detalhe seu. 💝", 
+    gif: "fotosG/01.gif" 
+    },
+    { name: "Onde o tempo para", 
+    msg: "Quanto mais o tempo passa, mais eu tenho certeza de que estou no lugar certo só por estar com você, meu gatinho. 💓", 
+    gif: "fotosG/02.gif" 
+    },
+    { name: "Nosso Chamego", 
+    msg: "Ficar com você em call 24 horas por dia é bom demais, e eu sei que nunca vou enjoar de você. 💗", 
+    gif: "fotosG/03.gif" 
+    },
+    { name: "Horizonte de Eventos", 
+    msg: "Eu espero de verdade te encontrar e poder te encher de beijos, e gritar para o universo inteiro o quanto eu te amo. ❣️", 
+    gif: "fotosG/04.gif" 
+    },
+    { name: "Iguais", 
+    msg: "Eu amo o seu jeito de ser, o jeito que vc pensa e q você é, HOMI PERFEITO. 💕", 
+    gif: "fotosG/05.gif" 
+    },
+    { name: "Continua V2", 
+    msg: "Bom, esse é o nosso primeiro mês oficialmente juntos, e eu quero continuar com você, meu amor. Quero minha vida com você e espero que tudo isso nunca acabe. Eu te amo, lindo 💘" 
+    }
+];
+const gargantuaEspecial = {
+    name: "Gargantua Prime",
+    msg: "Você é o centro de tudo. Feliz 1 mês de namoro! ❤️",
+    gif: "fotosG/cat-kiss.gif"
+};
+
+for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'intro-star';
+    s.style.left = Math.random() * 100 + 'vw'; s.style.top = Math.random() * 100 + 'vh';
+    s.style.width = s.style.height = (Math.random() * 2 + 1) + 'px';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    document.getElementById("start-screen").appendChild(s);
+}
+
+function startGame() {
+    document.getElementById("start-screen").style.opacity = "0";
+    setTimeout(() => {
+        document.getElementById("start-screen").style.display = "none";
+        document.getElementById("ui").style.display = "block";
+        gameRunning = true; animate();
+    }, 1000);
+}
+
+const blackHoles = [{ id: 'gargantua', x: 0, y: 0, z: 0, r: 70, color: [255, 140, 0], ...gargantuaEspecial }];
+const bhColors = [[200, 50, 255], [0, 200, 255], [255, 50, 50], [50, 255, 100]];
+
+for(let i=0; i<12; i++) {
+    const info = dadosBuracosNegros[i % dadosBuracosNegros.length];
+    blackHoles.push({
+        id: 'bh_'+i, x: (Math.random()-0.5)*10000, y: (Math.random()-0.5)*3000, z: (Math.random()-0.5)*10000,
+        r: 30 + Math.random()*30, color: bhColors[i % 4], 
+        name: info.name, msg: info.msg, gif: info.gif 
+    });
+}
+
+const allPlanets = [];
+blackHoles.forEach((bh, idx) => {
+    const numP = (idx === 0) ? 5 : 1;
+    for(let j=0; j<numP; j++) {
+        const nomeAleatorio = nomesPlanetas[Math.floor(Math.random() * nomesPlanetas.length)];
+        allPlanets.push({
+            parent: bh, dist: 350 + Math.random()*600, size: 5 + Math.random()*5,
+            speed: 0.002 + Math.random()*0.005, angle: Math.random()*6.2,
+            name: nomeAleatorio + (idx > 0 ? " " + (j+1) : ""), 
+            color: `hsl(${Math.random()*360}, 60%, 75%)`,
+            desc: mensagensPlanetas[Math.floor(Math.random() * mensagensPlanetas.length)]
+        });
+    }
+});
+
+const particles = [];
+for(let i=0; i<300; i++) {
+    particles.push({ parent: blackHoles[0], r: 130 + Math.random()*280, angle: Math.random()*6.2, y: (Math.random()-0.5)*10, speed: 0.006 + Math.random()*0.01, size: 1.2 });
+}
+
+let stars = [];
+function generateStars() {
+    stars = [];
+    for(let i=0; i<400; i++) stars.push({ x: Math.random()*innerWidth, y: Math.random()*innerHeight, s: Math.random()*1, o: Math.random() });
+}
+
+function project(x, y, z, cY, sY, cX, sX) {
+    let x1 = x * cY - z * sY;
+    let z1 = x * sY + z * cY;
+    let y1 = y * cX - z1 * sX;
+    let z2 = y * sX + z1 * cX;
+    const sc = 1000 / (1000 + (z2 * zoomScale));
+    return { x: cx + (x1 * zoomScale) * sc, y: cy + (y1 * zoomScale) * sc, scale: sc * zoomScale, z: z2 };
+}
+
+function drawBH(obj, pulse) {
+    const r = obj.r;
+    const g = ctx.createRadialGradient(obj.x, obj.y, r * 0.5, obj.x, obj.y, r * (1.3 + pulse));
+    g.addColorStop(0, `rgb(${obj.color[0]},${obj.color[1]},${obj.color[2]})`);
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(obj.x, obj.y, r * 2.2, 0, 6.29); ctx.fill();
+    ctx.fillStyle = "black";
+    ctx.beginPath(); ctx.arc(obj.x, obj.y, r, 0, 6.29); ctx.fill();
+}
+
+function animate(){
+    if(!gameRunning) return;
+    const now = Date.now() / 1000;
+    cx = canvas.width/2; cy = canvas.height/2;
+    ctx.fillStyle = "#000105"; ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "white";
+    for(let i=0; i<stars.length; i++) {
+        ctx.globalAlpha = stars[i].o;
+        ctx.fillRect(stars[i].x, stars[i].y, stars[i].s, stars[i].s);
+    }
+    ctx.globalAlpha = 1;
+
+    const renderList = [];
+    const cY = Math.cos(rotY), sY = Math.sin(rotY), cX = Math.cos(rotX), sX = Math.sin(rotX);
+
+    blackHoles.forEach(bh => {
+        const pr = project(bh.x, bh.y, bh.z, cY, sY, cX, sX);
+        if (pr.scale > 0.01) renderList.push({ type: 'bh', z: pr.z, x: pr.x, y: pr.y, r: bh.r * pr.scale, color: bh.color, pulse: Math.sin(now*2)*0.1, name: bh.name, msg: bh.msg, gif: bh.gif });
+    });
+
+    allPlanets.forEach(pl => {
+        const ang = now * pl.speed * 8 + pl.angle;
+        const px = pl.parent.x + Math.cos(ang)*pl.dist;
+        const pz = pl.parent.z + Math.sin(ang)*pl.dist;
+        const pr = project(px, pl.parent.y, pz, cY, sY, cX, sX);
+        if(pr.scale > 0.05) renderList.push({ type: 'pl', z: pr.z, x: pr.x, y: pr.y, s: pl.size*pr.scale, c: pl.color, name: pl.name, desc: pl.desc });
+    });
+
+    particles.forEach(p => {
+        p.angle += p.speed;
+        const px = p.parent.x + Math.cos(p.angle)*p.r;
+        const pz = p.parent.z + Math.sin(p.angle)*p.r;
+        const pr = project(px, p.parent.y + p.y, pz, cY, sY, cX, sX);
+        if(pr.scale > 0.1) renderList.push({ type: 'part', z: pr.z, x: pr.x, y: pr.y, s: p.size*pr.scale, c: '#ffcc00' });
+    });
+
+    renderList.sort((a,b) => b.z - a.z);
+    lastRenderList = renderList;
+
+    for(let i=0; i<renderList.length; i++){
+        const obj = renderList[i];
+        if(obj.type === 'part') {
+            ctx.fillStyle = obj.c; ctx.fillRect(obj.x, obj.y, obj.s, obj.s);
+        } else if(obj.type === 'pl') {
+            ctx.fillStyle = obj.c; ctx.beginPath(); ctx.arc(obj.x, obj.y, Math.max(0.1, obj.s), 0, 6.29); ctx.fill();
+        } else if(obj.type === 'bh') {
+            drawBH(obj, obj.pulse);
+        }
+    }
+    requestAnimationFrame(animate);
+}
+
+// EVENTOS ATUALIZADOS
+canvas.onmousedown = e => { dragging = true; lastX = e.clientX; lastY = e.clientY; clickStartTime = Date.now(); };
+window.onmouseup = e => {
+    dragging = false;
+    if (gameRunning && Date.now() - clickStartTime < 200) {
+        const hit = lastRenderList.find(o => (o.type === 'pl' || o.type === 'bh') && Math.hypot(e.clientX - o.x, e.clientY - o.y) < (o.s || o.r) + 20);
+        if (hit) {
+            infoPanel.style.display = 'block';
+            document.getElementById("obj-name").innerText = hit.name;
+            
+            // Correção para exibir msg ou desc (evita undefined)
+            document.getElementById("obj-desc").innerText = hit.msg || hit.desc || "";
+
+            // Verifica se existe GIF/Foto definida
+            if(hit.gif && hit.gif.trim() !== "") {
+                gifElement.src = hit.gif;
+                gifElement.style.display = 'block';
+            } else {
+                gifElement.style.display = 'none';
+            }
+        } else { closePanel(); }
+    }
+};
+
+window.onmousemove = e => { if(dragging) { rotY += (e.clientX - lastX) * 0.003; rotX += (e.clientY - lastY) * 0.003; lastX = e.clientX; lastY = e.clientY; } };
+canvas.onwheel = e => { if(gameRunning) { e.preventDefault(); const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9; const newZoom = zoomScale * zoomFactor; if (newZoom > 0.05 && newZoom < 1.8) zoomScale = newZoom; } };
+
+function closePanel() { infoPanel.style.display = 'none'; gifElement.src = ""; }
+window.onresize = () => { canvas.width = innerWidth; canvas.height = innerHeight; generateStars(); };
+window.onresize();
+</script>
+</body>
+</html>
