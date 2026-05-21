@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>3 Meses 💖</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    overflow:hidden;
+    width:100%;
+    height:100vh;
+    background:linear-gradient(to bottom,#b7c7ff,#edf1ff);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+/* FUNDO */
+
+.blur{
+    position:absolute;
+    width:600px;
+    height:600px;
+    background:rgba(255,255,255,0.15);
+    border-radius:50%;
+    filter:blur(120px);
+}
+
+/* TEXTO TOPO */
+
+.top-text{
+    position:absolute;
+    top:40px;
+    text-align:center;
+    color:rgb(0, 0, 0);
+    z-index:20;
+    text-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+
+.top-text h1{
+    font-size:42px;
+}
+
+.top-text p{
+    margin-top:10px;
+    font-size:18px;
+}
+
+/* CORAÇÃO */
+
+.heart-wrapper{
+    position:absolute;
+    z-index:5;
+    animation:pulse 2s infinite;
+    cursor:pointer;
+    transition:1s;
+}
+
+.heart{
+    width:180px;
+    height:180px;
+    background:#a63c48;
+    position:relative;
+    transform:rotate(-45deg);
+    box-shadow:0 0 40px rgba(166,60,72,0.5);
+}
+
+.heart::before,
+.heart::after{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    background:#a63c48;
+    border-radius:50%;
+}
+
+.heart::before{
+    top:-90px;
+    left:0;
+}
+
+.heart::after{
+    left:90px;
+    top:0;
+}
+
+/* ANIMAÇÃO CORAÇÃO */
+
+@keyframes pulse{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.05);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+/* CORAÇÃO SUMINDO */
+
+.heart-wrapper.hide{
+
+    animation:heartDisappear 1s forwards;
+
+}
+
+@keyframes heartDisappear{
+
+    0%{
+        opacity:1;
+        transform:scale(1);
+    }
+
+    100%{
+        opacity:0;
+        transform:scale(0);
+    }
+
+}
+
+/* CAIXA FOFA */
+
+.message-box{
+
+    position:absolute;
+
+    width:340px;
+
+    padding:30px;
+
+    background:rgba(255,255,255,0.15);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,0.2);
+
+    border-radius:25px;
+
+    text-align:center;
+
+    color:rgb(0, 0, 0);
+
+    z-index:30;
+
+    opacity:0;
+
+    transform:scale(0.7);
+
+    pointer-events:none;
+
+    transition:0.8s;
+
+    box-shadow:
+    0 0 30px rgba(0,0,0,0.1);
+
+}
+
+.message-box.show{
+
+    opacity:1;
+
+    transform:scale(1);
+
+}
+
+.message-box h2{
+
+    font-size:40px;
+
+    margin-bottom:15px;
+
+}
+
+.message-box p{
+
+    font-size:18px;
+
+    line-height:1.7;
+
+    text-shadow:
+    0 0 10px rgba(0,0,0,0.15);
+
+}
+
+/* SPOTIFY */
+
+.spotify-player{
+    position:absolute;
+    bottom:20px;
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.spotify-title{
+    color:rgb(0, 0, 0);
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+/* CORAÇÕES SUBINDO */
+
+.floating-heart{
+    position:absolute;
+    bottom:-50px;
+    animation:floatUp linear forwards;
+    opacity:0.8;
+    z-index:0;
+}
+
+@keyframes floatUp{
+
+    0%{
+        transform:translateY(0) scale(1);
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    100%{
+        transform:translateY(-120vh) scale(1.8);
+        opacity:0;
+    }
+
+}
+
+/* ESTRELAS */
+
+.star{
+    position:absolute;
+    width:5px;
+    height:5px;
+    background:white;
+    border-radius:50%;
+    animation:blink 2s infinite alternate;
+}
+
+@keyframes blink{
+
+    from{
+        opacity:0.2;
+        transform:scale(0.8);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1.5);
+    }
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .heart{
+        width:140px;
+        height:140px;
+    }
+
+    .heart::before,
+    .heart::after{
+        width:140px;
+        height:140px;
+    }
+
+    .heart::before{
+        top:-70px;
+    }
+
+    .heart::after{
+        left:70px;
+    }
+
+    .top-text h1{
+        font-size:28px;
+    }
+
+    .message-box{
+        width:90%;
+        padding:25px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="blur"></div>
+
+<!-- ESTRELAS -->
+
+<div class="star" style="top:10%; left:20%;"></div>
+<div class="star" style="top:18%; left:75%;"></div>
+<div class="star" style="top:75%; left:12%;"></div>
+<div class="star" style="top:65%; left:88%;"></div>
+
+<!-- TEXTO -->
+
+<div class="top-text">
+
+    <h1>Feliz 3 Meses</h1>
+
+    <p>
+       Every time I think about you, I swear I fall in love again
+    </p>
+
+</div>
+
+<!-- CORAÇÃO -->
+
+<div class="heart-wrapper">
+
+    <div class="heart"></div>
+
+</div>
+
+<!-- MENSAGEM -->
+
+<div class="message-box" id="messageBox">
+
+    <h2>❤️</h2>
+
+<p>
+    clicou no coração<br>
+    agora ele é seu para sempre 💖<br><br>
+
+    fico muito feliz em saber<br>
+    que meu coração é completamente seu, meu gatinho.<br><br>
+
+    como o Lil Peep diria:<br>
+    “Trust me, I got nothin' for you other than love.”
+</p>
+</div>
+
+<!-- SPOTIFY -->
+
+<div class="spotify-player">
+
+    <div class="spotify-title">
+        ﮩ٨ـﮩﮩ٨ـ♡ﮩ٨ـﮩﮩ٨ـ
+    </div>
+
+    <iframe
+        style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/4k3xDpAdBuM17mNNHhOZkK?utm_source=generator"
+        width="320"
+        height="80"
+        frameBorder="0"
+        allowfullscreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+    </iframe>
+
+</div>
+
+<script>
+
+/* CORAÇÕES SUBINDO */
+
+function createHeart(){
+
+    const heart =
+    document.createElement("div");
+
+    heart.classList.add("floating-heart");
+
+    const hearts = [
+        "☆",
+        ".✦ ݁˖",
+        "๋ ࣭ ⭑๋ ࣭ ⭑",
+        "♥",
+        "✴︎"
+    ];
+
+    heart.innerHTML =
+    hearts[Math.floor(Math.random() * hearts.length)];
+
+    heart.style.left =
+    Math.random() * window.innerWidth + "px";
+
+    heart.style.fontSize =
+    (20 + Math.random() * 30) + "px";
+
+    heart.style.animationDuration =
+    (4 + Math.random() * 4) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+
+        heart.remove();
+
+    },8000);
+
+}
+
+setInterval(createHeart,250);
+
+/* CLICK NO CORAÇÃO */
+
+const heartWrapper =
+document.querySelector(".heart-wrapper");
+
+const messageBox =
+document.getElementById("messageBox");
+
+heartWrapper.addEventListener("click",()=>{
+
+    heartWrapper.classList.add("hide");
+
+    setTimeout(()=>{
+
+        heartWrapper.style.display = "none";
+
+        messageBox.classList.add("show");
+
+    },800);
+
+});
+
+</script>
+
+</body>
+</html>
