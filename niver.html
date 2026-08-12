@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz aniversário, meu amor 🎂</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff8fb;color:#29202a}
+.screen{position:fixed;inset:0;display:grid;place-items:center;transition:opacity .6s ease,transform .6s ease}
+#intro{z-index:3;background:radial-gradient(circle at 18% 18%,#c9dceb 0,transparent 30%),radial-gradient(circle at 82% 75%,#f2e5cf 0,transparent 32%),#f7f8f6}
+.intro-card{text-align:center;width:min(92vw,700px);display:flex;flex-direction:column;align-items:center;justify-content:center;animation:cardIn 1s cubic-bezier(.2,.9,.25,1) both}
+.cake-svg{display:block;width:min(62vw,500px);height:auto;max-height:58vh;margin:48px auto 0;transform:none;filter:drop-shadow(0 20px 20px rgba(110,50,80,.12));animation:cakeIn 1.2s cubic-bezier(.2,.9,.25,1) both}
+.intro-title{margin:10px 0 0;font-size:clamp(28px,5vw,46px);letter-spacing:-1px;color:#263b4d}
+.intro-sub{margin:8px auto 0;color:#6d7780;font-size:16px}
+#play{position:absolute;top:28px;left:50%;transform:translateX(-50%);z-index:10;border:0;border-radius:999px;padding:14px 28px;font-size:16px;font-weight:800;cursor:pointer;color:#fff;background:#29445d;box-shadow:0 10px 28px rgba(41,68,93,.25);transition:.18s}
+#play:hover{transform:translateX(-50%) translateY(-3px) scale(1.03)}
+#game{opacity:0;pointer-events:none;background:linear-gradient(#fff9fc 0 68%,#fff0f5 68% 100%)}
+#game.active{opacity:1;pointer-events:auto}
+.hud{position:fixed;top:22px;left:50%;transform:translateX(-50%);z-index:8;text-align:center}
+.score{display:inline-block;min-width:150px;padding:9px 18px;border-radius:999px;background:#ffffffdf;box-shadow:0 8px 24px #783c5a17;font-weight:900;font-size:20px}
+.hint{margin-top:8px;color:#8b7480;font-size:13px}
+#gameCanvas{width:100vw;height:100vh;display:block;touch-action:manipulation}
+.game-start{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:7}
+.game-start span{padding:13px 20px;border-radius:18px;background:#ffffffdf;box-shadow:0 10px 35px #783c5a1a;font-weight:800;animation:pulse 1.2s ease-in-out infinite}
+.crash-screen{position:fixed;inset:0;display:none;place-items:center;background:rgba(255,248,251,.72);backdrop-filter:blur(5px);z-index:30}
+.crash-screen.active{display:grid}
+.crash-card{width:min(88vw,420px);padding:34px 28px;text-align:center;border-radius:28px;background:#fff;box-shadow:0 25px 70px rgba(80,35,60,.18);animation:finalIn .45s ease both}
+.crash-emoji{font-size:48px}
+.crash-card h2{margin:8px 0;font-size:28px}
+.crash-card p{color:#76616d;margin:8px 0 20px}
+.crash-card button{border:0;border-radius:999px;padding:13px 24px;background:#e95d91;color:#fff;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(233,93,145,.25)}
+
+#final{opacity:0;pointer-events:none;z-index:20;padding:24px;background:radial-gradient(circle at 15% 15%,#c9dceb99 0,transparent 28%),radial-gradient(circle at 85% 75%,#f2e5cf99 0,transparent 28%),#f7f8f6}
+#final.active{opacity:1;pointer-events:auto}
+.letter{width:min(90vw,650px);padding:clamp(28px,6vw,55px);text-align:center;border-radius:32px;background:#ffffffc7;box-shadow:0 24px 80px #783c5a21;backdrop-filter:blur(10px);animation:finalIn .9s cubic-bezier(.2,.9,.25,1) both}
+.heart{font-size:46px;animation:heartbeat 1.3s ease-in-out infinite}
+.letter h1{margin:8px 0 14px;font-size:clamp(30px,6vw,52px)}
+.letter p{margin:10px 0;line-height:1.65;color:#67525e;font-size:17px}
+.signature{margin-top:22px!important;font-weight:800;color:#365a78!important}
+.final-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:24px}
+.restart,.home-btn{border:0;border-radius:999px;padding:12px 18px;font-weight:800;cursor:pointer}
+.restart{background:#29445d;color:#fff}
+.home-btn{background:#e8edf1;color:#29445d;border:2px solid #9eb6c8}
+@keyframes cardIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes cakeIn{from{opacity:0;transform:translateY(80px) scale(.72) rotate(-4deg)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.04);opacity:1}}
+@keyframes finalIn{from{opacity:0;transform:translateY(28px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.15)}30%{transform:scale(1)}}
+@media(max-width:600px){#play{top:18px;padding:12px 23px}.cake-svg{width:min(84vw,430px);max-height:58vh;margin-top:48px}.hint{font-size:12px}}
+</style>
+</head>
+<body>
+
+<section id="intro" class="screen">
+  <div class="intro-card">
+    <!-- Bolo desenhado em SVG para manter tudo dentro deste único arquivo -->
+    <svg class="cake-svg" viewBox="0 0 620 650" xmlns="http://www.w3.org/2000/svg" aria-label="Bolo de aniversário">
+
+  <!-- Vela completa, com espaço no topo para não cortar -->
+  <g stroke="#263b4d" stroke-width="9" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="294" y="120" width="32" height="82" rx="5" fill="#f8f4ed"/>
+    <path d="M310 92 C286 66 306 40 310 32 C316 41 337 65 310 92 Z" fill="#f2b35f"/>
+  </g>
+
+  <!-- ANDAR SUPERIOR
+       topo = 190
+       base = 325
+       espessura visual = 135 -->
+  <path d="M180 325
+           L180 210
+           Q180 190 200 190
+           L420 190
+           Q440 190 440 210
+           L440 325
+           Z"
+        fill="#f8fbfc"
+        stroke="#263b4d"
+        stroke-width="9"
+        stroke-linejoin="round"/>
+
+  <!-- COBERTURA SUPERIOR -->
+  <path d="M180 265
+           C195 235 210 295 225 265
+           C240 235 255 295 270 265
+           C285 235 300 295 315 265
+           C330 235 345 295 360 265
+           C375 235 390 295 405 265
+           C420 235 430 290 440 265
+           L440 325
+           L180 325
+           Z"
+        fill="#b9d2e4"
+        stroke="#263b4d"
+        stroke-width="9"
+        stroke-linejoin="round"/>
+
+  <!-- ANDAR INFERIOR
+       topo = 325, exatamente encostado no andar superior
+       base = 475 -->
+  <path d="M105 475
+           L105 350
+           Q105 325 130 325
+           L490 325
+           Q515 325 515 350
+           L515 475
+           Z"
+        fill="#f8fbfc"
+        stroke="#263b4d"
+        stroke-width="9"
+        stroke-linejoin="round"/>
+
+  <!-- COBERTURA INFERIOR -->
+  <path d="M105 425
+           C125 392 145 458 165 425
+           C185 392 205 458 225 425
+           C245 392 265 458 285 425
+           C305 392 325 458 345 425
+           C365 392 385 458 405 425
+           C425 392 445 458 465 425
+           C485 392 502 450 515 425
+           L515 475
+           L105 475
+           Z"
+        fill="#d8b58a"
+        stroke="#263b4d"
+        stroke-width="9"
+        stroke-linejoin="round"/>
+
+  <!-- BASE -->
+  <path d="M105 475 L515 475"
+        fill="none"
+        stroke="#263b4d"
+        stroke-width="9"/>
+</svg>
+    <h1 class="intro-title">Tem uma surpresinha pra você 🎂</h1>
+    <p class="intro-sub">Mas primeiro... vamos fazer esse bolinho chegar até 100!</p>
+  </div>
+  <button id="play">▶ Jogar</button>
+</section>
+
+<section id="game" class="screen">
+  <div class="hud">
+    <div class="score">Pontos: <span id="score">0</span> / 100</div>
+    <div class="hint">Clique, toque ou aperte espaço para pular</div>
+  </div>
+  <canvas id="gameCanvas"></canvas>
+  <div class="game-start" id="gameStart"><span>Preparado? Vai! 💗</span></div>
+  <div class="crash-screen" id="crashScreen">
+    <div class="crash-card">
+      <div class="crash-emoji">💥</div>
+      <h2>Ops! O bolinho bateu!</h2>
+      <p>Você fez <strong><span id="crashScore">0</span> pontos</strong>.</p>
+      <button id="retry">↻ Reiniciar</button>
+    </div>
+  </div>
+</section>
+
+<section id="final" class="screen">
+  <div class="letter">
+    <div class="heart">♥</div>
+    <h1>Feliz aniversário, meu amor!</h1>
+    <p>Que seu novo ano seja tão lindo quanto o sorriso que você coloca no meu rosto.</p>
+    <p>Obrigada por existir, por ser você e por deixar meus dias mais especiais. Espero estar ao seu lado em muitos e muitos aniversários.</p>
+    <p>Te desejo tudo de mais bonito nesse mundo — e um pouquinho de mim em cada momento feliz. 💗</p>
+    <p class="signature">Com todo meu amor, feliz aniversário! 🎂✨</p>
+    <div class="final-actions"><button class="restart" id="restart">Jogar de novo</button><button class="home-btn" id="homeBtn">⌂ Voltar ao início</button></div>
+  </div>
+</section>
+
+<script>
+const intro=document.getElementById('intro'),game=document.getElementById('game'),finalScreen=document.getElementById('final');
+const play=document.getElementById('play'),restart=document.getElementById('restart'),canvas=document.getElementById('gameCanvas');
+const ctx=canvas.getContext('2d'),scoreEl=document.getElementById('score'),startMsg=document.getElementById('gameStart'),crashScreen=document.getElementById('crashScreen'),crashScore=document.getElementById('crashScore'),retry=document.getElementById('retry'),homeBtn=document.getElementById('homeBtn');
+let W,H,dpr,running=false,finished=false,score=0,last=0,scoreTimer=0,obstacleTimer=0,speed=320,obstacles=[],particles=[],groundY=0;
+const player={x:110,y:0,w:62,h:72,vy:0,grounded:true,squash:1};
+
+function resize(){
+  dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;
+  canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);canvas.style.width=W+'px';canvas.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);groundY=H*.68;if(!running)player.y=groundY-player.h;
+}
+addEventListener('resize',resize);resize();
+
+function jump(){
+  if(!running||finished)return;
+  if(player.grounded){player.vy=-720;player.grounded=false;player.squash=.86;burst(player.x+player.w/2,groundY,5)}
+}
+addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();jump()}});
+canvas.addEventListener('pointerdown',jump);
+
+function resetGame(){
+  score=0;scoreTimer=0;speed=Math.max(280,Math.min(390,W*.38));obstacles=[];particles=[];obstacleTimer=0;finished=false;
+  player.vy=0;player.grounded=true;player.y=groundY-player.h;scoreEl.textContent=score;
+}
+function startGame(){
+  crashScreen.classList.remove('active');
+  intro.style.opacity='0';intro.style.transform='scale(.98)';
+  setTimeout(()=>{intro.style.display='none';game.classList.add('active');resetGame();startMsg.style.display='grid';
+    setTimeout(()=>startMsg.style.display='none',900);running=true;requestAnimationFrame(loop)},600);
+}
+function makeObstacle(){
+  const tall=Math.random()>.45;obstacles.push({x:W+30,y:groundY-(tall?56:42),w:tall?34:48,h:tall?56:42,type:tall?'candle':'gift'});
+}
+function burst(x,y,n){
+  for(let i=0;i<n;i++)particles.push({x,y,vx:(Math.random()-.5)*130,vy:-Math.random()*140-30,life:.55+Math.random()*.35,t:0,r:2+Math.random()*3});
+}
+function update(dt){
+  if(!running)return;
+  player.vy+=1850*dt;player.y+=player.vy*dt;
+  if(player.y>=groundY-player.h){if(!player.grounded)burst(player.x+player.w/2,groundY,4);player.y=groundY-player.h;player.vy=0;player.grounded=true}
+  player.squash+=(1-player.squash)*Math.min(1,dt*12);
+  obstacleTimer+=dt;
+  if(obstacleTimer>Math.max(.72,1.08-score/280)){obstacleTimer=0;makeObstacle()}
+  for(const o of obstacles)o.x-=speed*dt;
+  obstacles=obstacles.filter(o=>o.x+o.w>-30);
+  scoreTimer+=dt;
+  if(scoreTimer>=1){
+    const wholeSeconds=Math.floor(scoreTimer);
+    scoreTimer-=wholeSeconds;
+    score=Math.min(100,score+wholeSeconds*3);
+    scoreEl.textContent=score;
+  }
+  if(score>=100){finishGame();return}
+  const px=player.x+8,py=player.y+7,pw=player.w-16,ph=player.h-10;
+  for(const o of obstacles){
+    if(px<o.x+o.w&&px+pw>o.x&&py<o.y+o.h&&py+ph>o.y){
+      crashGame();
+      return;
+    }
+  }
+  for(const p of particles){p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=420*dt}
+  particles=particles.filter(p=>p.t<p.life);
+}
+function drawBackground(){
+  ctx.clearRect(0,0,W,H);
+  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#fffafd');g.addColorStop(1,'#fff0f6');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='rgba(255,255,255,.72)';
+  for(let i=0;i<5;i++){const x=((i*260-(performance.now()/50)%260)+W)%W,y=100+(i%2)*70;ctx.beginPath();ctx.arc(x,y,22,0,Math.PI*2);ctx.arc(x+25,y-8,28,0,Math.PI*2);ctx.arc(x+55,y,21,0,Math.PI*2);ctx.fill()}
+  ctx.fillStyle='#e4edf2';ctx.fillRect(0,groundY,W,H-groundY);ctx.fillStyle='#9eb6c8';ctx.fillRect(0,groundY,W,5);
+  ctx.strokeStyle='rgba(82,120,149,.22)';ctx.lineWidth=3;const off=(performance.now()/2.2)%80;
+  for(let x=-80-off;x<W+80;x+=80){ctx.beginPath();ctx.moveTo(x,groundY+35);ctx.lineTo(x+35,groundY+35);ctx.stroke()}
+}
+function drawMiniCake(){
+  ctx.save();const cx=player.x+player.w/2,cy=player.y+player.h/2;ctx.translate(cx,cy);ctx.scale(player.squash,2-player.squash);
+  ctx.strokeStyle='#29202a';ctx.lineWidth=7;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-14,27);ctx.lineTo(-17,40);ctx.moveTo(14,27);ctx.lineTo(17,40);ctx.stroke();
+  ctx.fillStyle='#fff';ctx.strokeStyle='#29202a';ctx.lineWidth=6;ctx.beginPath();ctx.roundRect(-27,-27,54,51,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#d8e5ee';ctx.beginPath();ctx.moveTo(-27,-9);for(let x=-27;x<=27;x+=13)ctx.quadraticCurveTo(x+6.5,-19+((x/13)%2)*12,x+13,-9);ctx.lineTo(27,-2);ctx.lineTo(-27,-2);ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.fillStyle='#fff';ctx.fillRect(-5,-42,10,16);ctx.strokeRect(-5,-42,10,16);ctx.beginPath();ctx.moveTo(0,-44);ctx.quadraticCurveTo(-8,-54,0,-62);ctx.quadraticCurveTo(8,-54,0,-44);ctx.fillStyle='#ffb64d';ctx.fill();ctx.stroke();
+  ctx.fillStyle='#29202a';ctx.beginPath();ctx.arc(-10,7,3.3,0,Math.PI*2);ctx.arc(10,7,3.3,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(0,9,9,.15,Math.PI-.15);ctx.strokeStyle='#29202a';ctx.lineWidth=2.5;ctx.stroke();ctx.restore();
+}
+function drawObstacles(){
+  for(const o of obstacles){ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle='#29202a';ctx.lineWidth=5;
+    if(o.type==='candle'){ctx.beginPath();ctx.roundRect(o.x,o.y,o.w,o.h,8);ctx.fill();ctx.stroke();ctx.fillStyle='#ffb64d';ctx.beginPath();ctx.moveTo(o.x+o.w/2,o.y-13);ctx.quadraticCurveTo(o.x+o.w/2-8,o.y-5,o.x+o.w/2,o.y);ctx.quadraticCurveTo(o.x+o.w/2+8,o.y-5,o.x+o.w/2,o.y-13);ctx.fill();ctx.stroke()}
+    else{ctx.fillStyle='#d8e5ee';ctx.beginPath();ctx.roundRect(o.x,o.y,o.w,o.h,8);ctx.fill();ctx.stroke();ctx.strokeStyle='#7c9bb5';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(o.x+o.w/2,o.y);ctx.lineTo(o.x+o.w/2,o.y+o.h);ctx.moveTo(o.x,o.y+o.h*.45);ctx.lineTo(o.x+o.w,o.y+o.h*.45);ctx.stroke()}
+    ctx.restore();
+  }
+}
+function drawParticles(){for(const p of particles){ctx.globalAlpha=Math.max(0,1-p.t/p.life);ctx.fillStyle='#527895';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
+function draw(){drawBackground();drawObstacles();drawMiniCake();drawParticles()}
+function loop(t){const dt=Math.min(.032,(t-last)/1000||.016);last=t;update(dt);draw();if(running)requestAnimationFrame(loop)}
+function crashGame(){
+  if(!running)return;
+  running=false;
+  finished=true;
+  burst(player.x+player.w/2,player.y+player.h/2,22);
+  crashScore.textContent=score;
+  draw();
+  setTimeout(()=>crashScreen.classList.add('active'),220);
+}
+function finishGame(){running=false;finished=true;burst(player.x+player.w/2,player.y+player.h/2,30);draw();setTimeout(()=>{game.classList.remove('active');finalScreen.classList.add('active')},850)}
+play.addEventListener('click',startGame);
+retry.addEventListener('click',()=>{
+  crashScreen.classList.remove('active');
+  resetGame();
+  startMsg.style.display='grid';
+  setTimeout(()=>startMsg.style.display='none',700);
+  running=true;
+  last=performance.now();
+  requestAnimationFrame(loop);
+});
+restart.addEventListener('click',()=>{
+  finalScreen.classList.remove('active');
+  setTimeout(()=>{game.classList.add('active');resetGame();running=true;last=performance.now();requestAnimationFrame(loop)},350);
+});
+homeBtn.addEventListener('click',()=>{
+  running=false;
+  finished=false;
+  crashScreen.classList.remove('active');
+  finalScreen.classList.remove('active');
+  game.classList.remove('active');
+  resetGame();
+  intro.style.display='grid';
+  intro.style.opacity='1';
+  intro.style.transform='none';
+});
+</script>
+</body>
+</html>
